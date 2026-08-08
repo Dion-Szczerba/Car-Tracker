@@ -1,7 +1,8 @@
+from multiprocessing.dummy import connection
+
 from database import get_connection
 
-connection = get_connection()
-cursor = connection.cursor()
+
 
 def calculate_mpg(fuel_ups):
     previous_row = None  # Initialize previous_row as None
@@ -25,8 +26,12 @@ def calculate_mpg(fuel_ups):
     return mpg_results  # Return the list of MPG results
 
 def get_fuel_ups(vehicle_id):
+    connection = get_connection()
+    cursor = connection.cursor()
     cursor.execute("SELECT litres, odometer, is_full_tank FROM fuel_ups WHERE vehicle_id = ? ORDER BY odometer ASC", (vehicle_id,))
-    return cursor.fetchall()
+    rows = cursor.fetchall()
+    connection.close()
+    return rows
 
 
 
