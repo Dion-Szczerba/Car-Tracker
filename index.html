@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Tracker</title>
+</head>
+<body>
+    <h1>My Car's MPG</h1>
+    <div id="result">Loading...</div>
+
+    <script>
+        // Ask the API for car 1's MPG
+        fetch("http://127.0.0.1:8000/vehicles/1/mpg")
+            .then(response => response.json())
+            .then(data => {
+                // Put the raw data on the page so we can see it worked
+                document.getElementById("result").textContent = JSON.stringify(data);
+            });
+    </script>
+</body>
+</html>

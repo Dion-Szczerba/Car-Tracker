@@ -21,7 +21,7 @@ def calculate_mpg(fuel_ups):
             litres = 0  # Reset litres for the next calculation
             gallons_consumed = fuel_consumed / 4.54609  # Convert litres to gallons
             mpg = distance / gallons_consumed if gallons_consumed != 0 else 0
-            mpg_results.append((distance, fuel_consumed, mpg))  # Store the result
+            mpg_results.append({"distance": distance, "fuel_consumed": fuel_consumed, "mpg": mpg})  # Store the result
             previous_row = row
     return mpg_results  # Return the list of MPG results
 
@@ -38,5 +38,5 @@ def get_fuel_ups(vehicle_id):
 if __name__ == "__main__":
     fuel_ups = get_fuel_ups(1)  # Replace 1 with the actual vehicle_id you want to query
     results = calculate_mpg(fuel_ups)
-    for distance, fuel_consumed, mpg in results:
-        print(f"Distance: {distance} miles, Fuel Consumed: {fuel_consumed:.2f} litres, MPG: {mpg:.2f}")
+    for result in results:
+        print(f"Distance: {result['distance']} miles, Fuel Consumed: {result['fuel_consumed']:.2f} litres, MPG: {result['mpg']:.2f}")

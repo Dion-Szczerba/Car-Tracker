@@ -9,6 +9,7 @@ def test_calculate_mpg():
     ]
     results = calculations.calculate_mpg(fake_fuel_ups)
     # one gap closes (98000 -> 98300): 300 miles, 40 litres
-    distance, fuel, mpg = results[0]
+    distance, fuel, mpg = results[0]["distance"], results[0]["fuel_consumed"], results[0]["mpg"]
     assert distance == 300
     assert fuel == 40
+    assert mpg == pytest.approx(34.1, abs=0.01)
