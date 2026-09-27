@@ -2,19 +2,55 @@
 <html>
 <head>
     <title>Car Tracker</title>
+    <style>
+        .mpg {
+            font-size: 24px;
+            color: green;
+        }
+        .detail {
+            font-size: 16px;
+            color: gray;
+        }
+    </style>
 </head>
 <body>
     <h1>My Car's MPG</h1>
     <div id="result">Loading...</div>
+    <h2>History</h2>
+    <ul id="history"></ul>
+
 
     <script>
         // Ask the API for car 1's MPG
         fetch("http://127.0.0.1:8000/vehicles/1/mpg")
             .then(response => response.json())
             .then(data => {
-                // Put the raw data on the page so we can see it worked
-                document.getElementById("result").textContent = JSON.stringify(data);
+                const resultDiv = document.getElementById("result");
+                const results = data.mpg_results;
+
+                if(results.length == 0){
+                    resultDiv.textContent = "No MPG data available.";
+                    return;
+                }
+
+                const latest = results[results.length - 1];
+                resultDiv.innerHTML = `
+                    <p class ="mpg">Latest MPG: <strong>${latest.mpg.toFixed(1)}</strong></p>
+                    <p class = "detail"> ${latest.distance} miles on ${latest.fuel_consumed} litres of fuel</p>
+                    `;
+                const historyList = document.getElementById("history");
+                historyList.innerHTML = results
+                    .map(r => `<li>${r.distance} miles, ${r.fuel_consumed} L, ${r.mpg.toFixed(1)} mpg</li>`)
+                    .join("");
+                    
+            })
+            .catch(error => {
+                document.getElementById("result").textContent =
+                "Could not fetch MPG data. Please ensure the API is running.";
+                console.error(error);
             });
+ 
+            
     </script>
 </body>
 </html>
